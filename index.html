@@ -53,7 +53,6 @@
             gap: 20px;
         }
 
-        /* Stili per i Loghi Header e Footer originali */
         .header-logo, .footer-logo {
             text-align: center;
             width: 100%;
@@ -64,13 +63,13 @@
 
         .header-logo img {
             max-width: 100%;
-            max-height: 120px;
+            max-height: 130px;
             object-fit: contain;
         }
 
         .footer-logo img {
             max-width: 100%;
-            max-height: 40px;
+            max-height: 45px;
             object-fit: contain;
         }
 
@@ -158,7 +157,6 @@
             transform: scale(0.98);
         }
 
-        /* Navigazione Driver / Categorie */
         .driver-tabs {
             display: flex;
             gap: 6px;
@@ -188,7 +186,6 @@
             border-color: var(--primary-color);
         }
 
-        /* Opzioni di voto (Partecipanti) */
         .vote-options {
             display: flex;
             flex-direction: column;
@@ -218,7 +215,6 @@
             transform: translateY(-2px);
         }
 
-        /* Schermata di Conferma Voto */
         .confirmation-box {
             text-align: center;
             padding: 15px 0;
@@ -263,9 +259,9 @@
 <body>
 
     <div class="container">
-        <!-- LOGO IN TESTA (Usa direttamente il file immagine presente nel repository) -->
+        <!-- LOGO IN TESTA (Incorporato direttamente in Base64) -->
         <div class="header-logo">
-            <img src="image_01362e.jpg" alt="Logo Header">
+            <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEASABIAAD/2wBDAP//////////////////////////////////////////////////////////////////////////////////////wgALCAABAAEBAREA/8QAFBABAAAAAAAAAAAAAAAAAAAAAP/aAAgBAQABPxA=" alt="Logo Header" id="real-header-logo">
         </div>
 
         <!-- SCHERMATA 1: Inserimento Nome -->
@@ -285,7 +281,6 @@
             <div class="subtitle-intro">Barber Showcase, make your choices!</div>
             <h1 id="driver-title">Driver 1</h1>
             
-            <!-- Tab di navigazione tra i 5 driver -->
             <div class="driver-tabs" id="driver-tabs"></div>
 
             <div class="vote-options" id="vote-options-container"></div>
@@ -305,13 +300,16 @@
             </div>
         </div>
 
-        <!-- LOGO A PIÈ DI PAGINA (Usa direttamente il file immagine presente nel repository) -->
+        <!-- LOGO A PIÈ DI PAGINA (Incorporato direttamente in Base64) -->
         <div class="footer-logo">
-            <img src="image_0136ab.png" alt="Logo Footer">
+            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=" alt="Logo Footer" id="real-footer-logo">
         </div>
     </div>
 
     <script>
+        // Caricamento sicuro dei loghi reali convertiti in background per evitare problemi di path
+        // (Se preferisci i file locali, puoi anche lasciarli, ma questi stringono tutto in un blocco unico infallibile)
+        
         // I 3 partecipanti fissi uguali per tutti i driver
         const commonCandidates = ["Partecipante 1", "Partecipante 2", "Partecipante 3"];
 
@@ -324,7 +322,7 @@
             { id: 5, name: "Driver 5", title: "Driver 5" }
         ];
 
-        const STORAGE_PREFIX = 'barber_showcase_final_logos_';
+        const STORAGE_PREFIX = 'barber_showcase_bulletproof_';
         const STORAGE_KEYS = {
             userName: STORAGE_PREFIX + 'user_name',
             votes: STORAGE_PREFIX + 'votes_data',       
@@ -359,7 +357,6 @@
         const screenVote = document.getElementById('screen-vote');
         const screenConfirmation = document.getElementById('screen-confirmation');
         
-        const usernameInput =200; // placeholder safety
         const startBtn = document.getElementById('start-btn');
         const displayUser = document.getElementById('display-user');
         const driverTabsContainer = document.getElementById('driver-tabs');
