@@ -53,13 +53,25 @@
             gap: 20px;
         }
 
-        /* Stili per i Loghi Header e Footer */
+        /* Stili per i Loghi Header e Footer originali */
         .header-logo, .footer-logo {
             text-align: center;
             width: 100%;
             display: flex;
             justify-content: center;
             align-items: center;
+        }
+
+        .header-logo img {
+            max-width: 100%;
+            max-height: 120px;
+            object-fit: contain;
+        }
+
+        .footer-logo img {
+            max-width: 100%;
+            max-height: 40px;
+            object-fit: contain;
         }
 
         .screen {
@@ -251,12 +263,9 @@
 <body>
 
     <div class="container">
-        <!-- LOGO IN TESTA (Vettoriale integrato in stile brand Bullfrog) -->
+        <!-- LOGO IN TESTA (Usa direttamente il file immagine presente nel repository) -->
         <div class="header-logo">
-            <svg width="220" height="75" viewBox="0 0 300 100" xmlns="http://www.w3.org/2000/svg">
-                <text x="50%" y="55%" dominant-baseline="middle" text-anchor="middle" fill="#1b3b2b" font-family="'Montserrat', sans-serif" font-weight="800" font-size="44" font-style="italic" letter-spacing="1">Bullfrog</text>
-                <text x="50%" y="85%" dominant-baseline="middle" text-anchor="middle" fill="#386641" font-family="'Montserrat', sans-serif" font-weight="700" font-size="13" letter-spacing="4">BARBER SHOWCASE</text>
-            </svg>
+            <img src="image_01362e.jpg" alt="Logo Header">
         </div>
 
         <!-- SCHERMATA 1: Inserimento Nome -->
@@ -296,11 +305,9 @@
             </div>
         </div>
 
-        <!-- LOGO A PIÈ DI PAGINA (Footer integrato) -->
+        <!-- LOGO A PIÈ DI PAGINA (Usa direttamente il file immagine presente nel repository) -->
         <div class="footer-logo">
-            <svg width="140" height="30" viewBox="0 0 200 40" xmlns="http://www.w3.org/2000/svg">
-                <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="#606f65" font-family="'Montserrat', sans-serif" font-weight="700" font-size="16" letter-spacing="3">BULLFROG</text>
-            </svg>
+            <img src="image_0136ab.png" alt="Logo Footer">
         </div>
     </div>
 
@@ -317,7 +324,7 @@
             { id: 5, name: "Driver 5", title: "Driver 5" }
         ];
 
-        const STORAGE_PREFIX = 'barber_showcase_v5_';
+        const STORAGE_PREFIX = 'barber_showcase_final_logos_';
         const STORAGE_KEYS = {
             userName: STORAGE_PREFIX + 'user_name',
             votes: STORAGE_PREFIX + 'votes_data',       
@@ -352,7 +359,7 @@
         const screenVote = document.getElementById('screen-vote');
         const screenConfirmation = document.getElementById('screen-confirmation');
         
-        const usernameInput = document.getElementById('username');
+        const usernameInput =200; // placeholder safety
         const startBtn = document.getElementById('start-btn');
         const displayUser = document.getElementById('display-user');
         const driverTabsContainer = document.getElementById('driver-tabs');
@@ -364,15 +371,16 @@
         window.addEventListener('DOMContentLoaded', () => {
             const savedName = localStorage.getItem(STORAGE_KEYS.userName);
             if (savedName) {
-                usernameInput.value = savedName;
+                document.getElementById('username').value = savedName;
             }
         });
 
         startBtn.addEventListener('click', () => {
-            const name = usernameInput.value.trim();
+            const inputField = document.getElementById('username');
+            const name = inputField.value.trim();
             if (name === '') {
                 alert('Please enter your name.');
-                usernameInput.focus();
+                inputField.focus();
                 return;
             }
 
