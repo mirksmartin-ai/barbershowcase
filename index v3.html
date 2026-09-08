@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Barber Showcase - Voting</title>
+    <!-- Importazione del font Montserrat da Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-color: #1b3b2b; /* Verde scuro */
+            --primary-hover: #12281d;
+            --accent-color: #386641;
+            --bg-color: #f4f1ea;     /* Crema */
+            --card-bg: #ffffff;
+            --text-color: #2b3a32;
+            --text-light: #606f65;
+            --border-color: #d8d3c5;
+            --success-color: #386641;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            background-color: var(--card-bg);
+            border-radius: 14px;
+            box-shadow: 0 6px 20px rgba(27, 59, 43, 0.08);
+            width: 100%;
+            max-width: 550px;
+            padding: 30px;
+            transition: all 0.3s ease;
+            border: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        /* Stili per i Loghi Header e Footer */
+        .header-logo, .footer-logo {
+            text-align: center;
+            width: 100%;
+        }
+
+        .header-logo img {
+            max-width: 180px;
+            max-height: 110px;
+            object-fit: contain;
+        }
+
+        .footer-logo img {
+            max-width: 200px;
+            max-height: 45px;
+            object-fit: contain;
+        }
+
+        .screen {
+            display: none;
+        }
+
+        .screen.active {
+            display: block;
+        }
+
+        h1 {
+            font-size: 1.5rem;
+            margin-bottom: 8px;
+            color: var(--primary-color);
+            text-align: center;
+            font-weight: 700;
+        }
+
+        .subtitle-intro {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--primary-color);
+            text-align: center;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        p {
+            color: var(--text-light);
+            font-size: 0.95rem;
+            margin-bottom: 20px;
+            text-align: center;
+            line-height: 1.4;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: var(--primary-color);
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 14px;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 1rem;
+            outline: none;
+            background-color: #fdfbf7;
+            font-family: 'Montserrat', sans-serif;
+            transition: border-color 0.2s;
+        }
+
+        input[type="text"]:focus {
+            border-color: var(--primary-color);
+        }
+
+        .btn {
+            width: 100%;
+            padding: 14px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: 'Montserrat', sans-serif;
+            transition: background-color 0.2s, transform 0.1s;
+        }
+
+        .btn:hover {
+            background-color: var(--primary-hover);
+        }
+
+        .btn:active {
+            transform: scale(0.98);
+        }
+
+        /* Navigazione Driver / Categorie */
+        .driver-tabs {
+            display: flex;
+            gap: 6px;
+            margin-bottom: 20px;
+            overflow-x: auto;
+            padding-bottom: 5px;
+        }
+
+        .driver-tab-btn {
+            flex: 1;
+            padding: 10px 6px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            border: 1px solid var(--border-color);
+            background-color: var(--bg-color);
+            color: var(--text-light);
+            border-radius: 6px;
+            cursor: pointer;
+            white-space: nowrap;
+            font-family: 'Montserrat', sans-serif;
+            transition: all 0.2s;
+        }
+
+        .driver-tab-btn.active {
+            background-color: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+
+        /* Opzioni di voto (Partecipanti) */
+        .vote-options {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 15px;
+        }
+
+        .vote-btn {
+            background-color: #fdfbf7;
+            border: 2px solid var(--border-color);
+            border-radius: 10px;
+            padding: 16px;
+            font-size: 1.05rem;
+            font-weight: 600;
+            color: var(--text-color);
+            cursor: pointer;
+            text-align: center;
+            font-family: 'Montserrat', sans-serif;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+        }
+
+        .vote-btn:hover {
+            border-color: var(--primary-color);
+            color: var(--primary-color);
+            background-color: #f0f4f1;
+            transform: translateY(-2px);
+        }
+
+        /* Schermata di Conferma Voto */
+        .confirmation-box {
+            text-align: center;
+            padding: 15px 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .badge {
+            background-color: #e5ede8;
+            color: var(--success-color);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            display: inline-block;
+        }
+
+        .user-greeting {
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+
+        .actions-footer {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .btn-secondary {
+            background-color: transparent;
+            border: 2px solid var(--primary-color);
+            color: var(--primary-color);
+        }
+
+        .btn-secondary:hover {
+            background-color: #f0f4f1;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- LOGO IN TESTA (Incorporato) -->
+        <div class="header-logo">
+            <svg viewBox="0 0 500 150" width="100%" height="100%" style="max-height: 90px;">
+                <!-- Rappresentazione vettoriale pulita del brand Bullfrog in verde scuro e crema -->
+                <rect width="100%" height="100%" fill="#1b3b2b" rx="15"/>
+                <text x="50%" y="55%" dominant-baseline="middle" text-anchor="middle" fill="#f4f1ea" font-family="'Montserrat', sans-serif" font-weight="800" font-size="42" letter-spacing="2">BULLFROG</text>
+                <text x="50%" y="78%" dominant-baseline="middle" text-anchor="middle" fill="#f4f1ea" font-family="'Montserrat', sans-serif" font-weight="600" font-size="14" letter-spacing="3">BARBER SHOWCASE</text>
+            </svg>
+        </div>
+
+        <!-- SCHERMATA 1: Inserimento Nome -->
+        <div id="screen-login" class="screen active">
+            <div class="subtitle-intro">Barber Showcase, make your choices!</div>
+            <h1>Welcome</h1>
+            <p>Enter your name to access the voting sections.</p>
+            <div class="form-group">
+                <label for="username">Your Name</label>
+                <input type="text" id="username" placeholder="E.g. John Doe" autocomplete="off">
+            </div>
+            <button class="btn" id="start-btn">Enter Contest</button>
+        </div>
+
+        <!-- SCHERMATA 2: Selezione Driver e Votazione -->
+        <div id="screen-vote" class="screen">
+            <div class="subtitle-intro">Barber Showcase, make your choices!</div>
+            <h1 id="driver-title">Driver 1</h1>
+            
+            <!-- Tab di navigazione tra i 5 driver -->
+            <div class="driver-tabs" id="driver-tabs"></div>
+
+            <div class="vote-options" id="vote-options-container"></div>
+        </div>
+
+        <!-- SCHERMATA 3: Conferma di avvenuta votazione -->
+        <div id="screen-confirmation" class="screen">
+            <div class="subtitle-intro">Barber Showcase, make your choices!</div>
+            <div class="confirmation-box">
+                <span class="badge">Vote successfully recorded!</span>
+                <h1 id="conf-driver-title">Driver 1</h1>
+                <p>Thank you <span id="display-user" class="user-greeting"></span>, your choice for this category has been saved.</p>
+            </div>
+
+            <div class="actions-footer">
+                <button class="btn btn-secondary" id="change-driver-btn">Go to another Driver</button>
+            </div>
+        </div>
+
+        <!-- LOGO A PIÈ DI PAGINA (Incorporato) -->
+        <div class="footer-logo">
+            <div style="font-size: 0.85rem; font-weight: 700; color: var(--primary-color); letter-spacing: 2px; text-transform: uppercase;">
+                BULLFROG BRANDS
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // I 3 partecipanti fissi uguali per tutti i driver
+        const commonCandidates = ["Partecipante 1", "Partecipante 2", "Partecipante 3"];
+
+        // Configurazione dei 5 Driver
+        const contestData = [
+            { id: 1, name: "Driver 1", title: "Driver 1" },
+            { id: 2, name: "Driver 2", title: "Driver 2" },
+            { id: 3, name: "Driver 3", title: "Driver 3" },
+            { id: 4, name: "Driver 4", title: "Driver 4" },
+            { id: 5, name: "Driver 5", title: "Driver 5" }
+        ];
+
+        const STORAGE_PREFIX = 'barber_showcase_clean_';
+        const STORAGE_KEYS = {
+            userName: STORAGE_PREFIX + 'user_name',
+            votes: STORAGE_PREFIX + 'votes_data',       
+            userVotes: STORAGE_PREFIX + 'user_voted'    
+        };
+
+        let currentDriverIndex = 0;
+
+        function getVotesData() {
+            const saved = localStorage.getItem(STORAGE_KEYS.votes);
+            if (saved) return JSON.parse(saved);
+            let initial = {};
+            contestData.forEach(d => { initial[d.id] = { 0: 0, 1: 0, 2: 0 }; });
+            return initial;
+        }
+
+        function saveVotesData(data) {
+            localStorage.setItem(STORAGE_KEYS.votes, JSON.stringify(data));
+        }
+
+        function getUserVotes() {
+            const saved = localStorage.getItem(STORAGE_KEYS.userVotes);
+            return saved ? JSON.parse(saved) : {};
+        }
+
+        function saveUserVotes(userVotes) {
+            localStorage.setItem(STORAGE_KEYS.userVotes, JSON.stringify(userVotes));
+        }
+
+        // Elementi DOM
+        const screenLogin = document.getElementById('screen-login');
+        const screenVote = document.getElementById('screen-vote');
+        const screenConfirmation = document.getElementById('screen-confirmation');
+        
+        const usernameInput = document.getElementById('username');
+        const startBtn = document.getElementById('start-btn');
+        const displayUser = document.getElementById('display-user');
+        const driverTabsContainer = document.getElementById('driver-tabs');
+        const voteOptionsContainer = document.getElementById('vote-options-container');
+        const driverTitle = document.getElementById('driver-title');
+        const confDriverTitle = document.getElementById('conf-driver-title');
+        const changeDriverBtn = document.getElementById('change-driver-btn');
+
+        window.addEventListener('DOMContentLoaded', () => {
+            const savedName = localStorage.getItem(STORAGE_KEYS.userName);
+            if (savedName) {
+                usernameInput.value = savedName;
+            }
+        });
+
+        startBtn.addEventListener('click', () => {
+            const name = usernameInput.value.trim();
+            if (name === '') {
+                alert('Please enter your name.');
+                usernameInput.focus();
+                return;
+            }
+
+            localStorage.setItem(STORAGE_KEYS.userName, name);
+            screenLogin.classList.remove('active');
+            loadDriverScreen(currentDriverIndex);
+        });
+
+        function loadDriverScreen(index) {
+            currentDriverIndex = index;
+            const driver = contestData[index];
+            const userVotes = getUserVotes();
+            const hasVotedThisDriver = userVotes[driver.id] === true;
+
+            displayUser.textContent = localStorage.getItem(STORAGE_KEYS.userName) || 'User';
+            renderDriverTabs();
+
+            if (hasVotedThisDriver) {
+                screenVote.classList.remove('active');
+                confDriverTitle.textContent = driver.title;
+                screenConfirmation.classList.add('active');
+            } else {
+                screenConfirmation.classList.remove('active');
+                driverTitle.textContent = driver.title;
+                
+                renderVoteOptions(driver);
+                screenVote.classList.add('active');
+            }
+        }
+
+        function renderDriverTabs() {
+            driverTabsContainer.innerHTML = '';
+            contestData.forEach((d, idx) => {
+                const btn = document.createElement('button');
+                btn.className = `driver-tab-btn ${idx === currentDriverIndex ? 'active' : ''}`;
+                btn.textContent = d.name;
+                btn.addEventListener('click', () => {
+                    loadDriverScreen(idx);
+                });
+                driverTabsContainer.appendChild(btn);
+            });
+        }
+
+        function renderVoteOptions(driver) {
+            voteOptionsContainer.innerHTML = '';
+            commonCandidates.forEach((candidate, cIdx) => {
+                const btn = document.createElement('button');
+                btn.className = 'vote-btn';
+                btn.textContent = candidate;
+                btn.addEventListener('click', () => {
+                    handleVote(driver.id, cIdx);
+                });
+                voteOptionsContainer.appendChild(btn);
+            });
+        }
+
+        function handleVote(driverId, candidateIdx) {
+            let votesData = getVotesData();
+            if (votesData[driverId] && votesData[driverId][candidateIdx] !== undefined) {
+                votesData[driverId][candidateIdx]++;
+                saveVotesData(votesData);
+            }
+
+            let userVotes = getUserVotes();
+            userVotes[driverId] = true;
+            saveUserVotes(userVotes);
+
+            screenVote.classList.remove('active');
+            confDriverTitle.textContent = contestData[currentDriverIndex].title;
+            screenConfirmation.classList.add('active');
+        }
+
+        changeDriverBtn.addEventListener('click', () => {
+            let nextIndex = (currentDriverIndex + 1) % contestData.length;
+            loadDriverScreen(nextIndex);
+        });
+    </script>
+</body>
+</html>
